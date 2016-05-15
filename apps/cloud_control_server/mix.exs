@@ -18,7 +18,7 @@ defmodule CloudControlServer.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger]]
+    [applications: [:logger, :poison, :httpoison]]
   end
 
   # Dependencies can be Hex packages:
@@ -35,6 +35,8 @@ defmodule CloudControlServer.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [{:cloud_control_client, in_umbrella: true},
+     {:poison, "~> 2.0"},
+     {:httpoison, "0.8.3"}]
   end
 end
