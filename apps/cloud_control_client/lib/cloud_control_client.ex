@@ -1,0 +1,2 @@
+defmodule CloudControlClient do
+end

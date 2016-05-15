@@ -1,0 +1,2 @@
+defmodule CloudControlApi do
+end

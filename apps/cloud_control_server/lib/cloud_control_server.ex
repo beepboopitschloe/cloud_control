@@ -1,0 +1,2 @@
+defmodule CloudControlServer do
+end
