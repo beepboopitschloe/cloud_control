@@ -19,12 +19,7 @@ defmodule CloudControlServer.DigitalOceanClient do
   """
 
   def get_droplets do
-    case get "droplets" do
-      {:ok, response} ->
-        response
-      error ->
-        error
-    end
+    get "droplets"
   end
 
   def create_droplet name do
@@ -37,12 +32,7 @@ defmodule CloudControlServer.DigitalOceanClient do
       ssh_keys: [@root_ssh_key_id]
     }
 
-    case post "droplets", body do
-      {:ok, response} ->
-        response
-      error ->
-        error
-    end
+    post "droplets", body
   end
 
   defp get path do
