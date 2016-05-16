@@ -2,6 +2,8 @@ defmodule CloudControlServer.DigitalOceanClient do
   @api_url "https://api.digitalocean.com/v2"
   @api_key "BEARER #{Application.fetch_env! :cloud_control_server, :digital_ocean_key}"
   @root_ssh_key_id Application.fetch_env! :cloud_control_server, :do_root_ssh_key_id
+  @client_node_cookie Node.get_cookie
+  @client_node_port 9000
 
   # TODO don't hardcode this
   @user_data_script """
@@ -17,9 +19,16 @@ defmodule CloudControlServer.DigitalOceanClient do
   sudo apt-get update > $LOGFILE 2>$ERRFILE
   sudo apt-get install -y $PACKAGES > $LOGFILE 2> $ERRFILE
 
-  git clone https://git.noahmuth.com/nmuth/cloud_control.git
+  git clone https://git.noahmuth.com/nmuth/cloud_control.git > $LOGFILE 2> $ERRFILE
   cd cloud_control/apps/cloud_control_client
-  iex -S mix
+
+  # get IP address of the node
+  ip=$(dig +short myip.opendns.com @resolver1.opendsn.com)
+
+  iex -S mix --name \"#{__MODULE__}@$ip\" \
+    --cookie #{@client_node_cookie} \
+    --erl '-kernel inet_dist_listen_min #{@client_node_port}' \
+    --erl '-kernel inet_dist_listen_max #{@client_node_port}' > $LOGFILE 2> $ERRFILE
   """
 
   def get_droplets do
