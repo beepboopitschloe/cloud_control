@@ -9,5 +9,8 @@ defmodule CloudControlServer do
     children = [
       supervisor(ServiceRegistry, [[name: :service_registry]])
     ]
+
+    opts = [strategy: :one_for_one, name: CloudControlServer.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 end

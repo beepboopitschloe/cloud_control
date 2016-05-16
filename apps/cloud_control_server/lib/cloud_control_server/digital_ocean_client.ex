@@ -16,6 +16,10 @@ defmodule CloudControlServer.DigitalOceanClient do
 
   sudo apt-get update > $LOGFILE 2>$ERRFILE
   sudo apt-get install -y $PACKAGES > $LOGFILE 2> $ERRFILE
+
+  git clone https://git.noahmuth.com/nmuth/cloud_control.git
+  cd cloud_control/apps/cloud_control_client
+  iex -S mix
   """
 
   def get_droplets do
